@@ -187,29 +187,28 @@ function checkNeighbours(grid, i, j) {
   for(var nI = -1; nI < 2; nI++) {
     for(var nJ = -1; nJ < 2; nJ++) {
 
-      var iCheck = i + nI;
-      var jCheck = j + nJ;
+      // take gridSizeWidth to be 10.
+      // if i == 9 and nI == 1
+      // 9 + 1 + 10 = 20
+      // therefore 20 % 10 == 0
+      // giving correct wrap around.
+      // an example on middle values:
+      // keeping the gridSizeWidth at 10
+      // if i == 5 and nI == 1
+      // 5 + 1 + 10 == 16;
+      // 16 % 10 == 6
+      // the formula will give the corret value regardless.
+      // it saves using the long previous algorithm to calculate the same thing.
+
+      var iCheck = (i + nI + gridSizeWidth) % gridSizeWidth;
+      var jCheck = (j + nJ + gridSizeHeight) % gridSizeHeight;
 
       if(nI == 0 && nJ == 0) {
         continue;
       }
 
-      if(iCheck < 0) {
-        iCheck = gridSizeWidth - 1;
-      } else if (iCheck > gridSizeWidth - 1) {
-        //iCheck = (iCheck % gridSizeWidth);
-        iCheck = 0;
-      }
-
-      if(jCheck < 0) {
-        jCheck = gridSizeHeight - 1;
-      } else if (jCheck > gridSizeHeight - 1) {
-        //jCheck = (jCheck % gridSizeHeight);
-        jCheck = 0;
-      }
-
-      iCheck = Math.floor(iCheck);
-      jCheck = Math.floor(jCheck);
+      //iCheck = Math.floor(iCheck);
+      //jCheck = Math.floor(jCheck);
 
       if(grid[iCheck][jCheck] == 1) {
         neighbours++;
